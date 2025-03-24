@@ -1,0 +1,36 @@
+name: Server Deployment
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Deploy to server via SSH
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: 101.200.61.212
+          username: root
+          password: +b0710rong..
+          script: |
+            # 克隆仓库
+            if [ -d "~/workspace/front/fortest" ]; then
+              cd ~/workspace/front/fortest
+              git pull
+            else
+              git clone https://github.com/imddc/fortest.git ~/workspace/front/fortest
+              cd ~/workspace/front/fortest
+            fi
+            # 构建 Docker 镜像
+            docker build -t fortest:latest .
+            # 停止并删除旧容器
+            docker stop fortest || true
+            docker rm fortest || true
+            # 运行新容器
+            docker run -d --name fortest -p 80:80 fortest:latest
