@@ -20,12 +20,12 @@ jobs:
           password: +b0710rong..
           script: |
             # 克隆仓库
-            if [ -d "~/workspace/front/fortest" ]; then
-              cd ~/workspace/front/fortest
+            if [ -d "/root/workspace/front/fortest" ]; then
+              cd /root/workspace/front/fortest
               git pull
             else
-              git clone https://github.com/imddc/fortest.git ~/workspace/front/fortest
-              cd ~/workspace/front/fortest
+              git clone https://github.com/imddc/fortest.git /root/workspace/front/fortest
+              cd /root/workspace/front/fortest
             fi
             # 构建 Docker 镜像
             docker build -t fortest:latest .
